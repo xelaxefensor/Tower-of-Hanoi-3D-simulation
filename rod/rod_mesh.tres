@@ -1,0 +1,8 @@
+[gd_resource type="CylinderMesh" load_steps=2 format=3 uid="uid://d0bml6syr01lj"]
+
+[ext_resource type="Material" uid="uid://dvr55c1t34yp8" path="res://rod/rod_material.tres" id="1_61q6a"]
+
+[resource]
+material = ExtResource("1_61q6a")
+top_radius = 0.1
+bottom_radius = 0.1

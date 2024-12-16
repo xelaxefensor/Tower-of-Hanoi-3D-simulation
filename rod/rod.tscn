@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ot3aeu13jkr5"]
+
+[ext_resource type="CylinderMesh" uid="uid://d0bml6syr01lj" path="res://rod/rod_mesh.tres" id="1_ls0g3"]
+
+[node name="Rod" type="MeshInstance3D"]
+mesh = ExtResource("1_ls0g3")
