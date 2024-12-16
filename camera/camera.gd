@@ -19,7 +19,7 @@ var is_focused : bool = true:
 
 
 func _ready() -> void:
-	is_focused = true
+	is_focused = false
 
 
 func _process(delta: float) -> void:
