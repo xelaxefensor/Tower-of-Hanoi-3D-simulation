@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://cq4ry327mhjmy"]
+
+[ext_resource type="Material" uid="uid://drr5o7v8waki7" path="res://disk/materials/disk_material_red.tres" id="1_4i750"]
+[ext_resource type="CylinderMesh" uid="uid://bfu81avcj6sb2" path="res://disk/disk_mesh.tres" id="2_ctaot"]
+
+[node name="Disk" type="MeshInstance3D"]
+material_override = ExtResource("1_4i750")
+mesh = ExtResource("2_ctaot")

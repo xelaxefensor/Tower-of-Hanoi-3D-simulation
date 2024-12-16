@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://bsh0gxheestkb"]
+
+[ext_resource type="PackedScene" uid="uid://cq4ry327mhjmy" path="res://disk/disk.tscn" id="1_751un"]
+[ext_resource type="PackedScene" uid="uid://cwiwotcf4fefu" path="res://camera/camera.tscn" id="2_l1sfo"]
+
+[sub_resource type="Environment" id="Environment_or0l8"]
+background_mode = 2
+
+[node name="Level" type="Node3D"]
+
+[node name="MeshInstance3D" parent="." instance=ExtResource("1_751un")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00323617, 0, 0.0486679)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.105905, -0.391073, 0.914246, 0.0183235, 0.920028, 0.391424, -0.994207, -0.0247017, 0.104602, 0.96606, 2.09914, 0)
+
+[node name="Camera" parent="." instance=ExtResource("2_l1sfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.179596, 0, 1.39121)
+environment = SubResource("Environment_or0l8")
