@@ -9,7 +9,11 @@ var number_of_rods : int = 3
 var hanoi = []
 var hanoi_moves = []
 
+var calculated : bool = false
+
+
 func set_up_hanoi():
+	calculated = false
 	hanoi = []
 	hanoi_moves = []
 	for x in number_of_rods:
@@ -24,8 +28,7 @@ func move_it(from: int, to: int) -> void:
 	hanoi_moves.append([from, to])
 	
 	hanoi[to].push_back(hanoi[from].pop_back())
-	print_debug(hanoi)
-
+	
 
 func do_hanoi(n: int, from: int, to: int, using: int) -> void:
 	if n == 0:
@@ -40,10 +43,7 @@ func do_hanoi(n: int, from: int, to: int, using: int) -> void:
 
 func start_hanoi() -> void:
 	set_up_hanoi()
-	var n = 0
-	while n <= 0:
-		n = number_of_disks
-		if n <= 0:
-			print("Počet kotoučů musí být kladné celé číslo.")
+ 
 	# Spuštění rekurzivního řešení
-	do_hanoi(n, 0, 1, 2)
+	do_hanoi(number_of_disks, 0, 1, 2)
+	calculated = true
