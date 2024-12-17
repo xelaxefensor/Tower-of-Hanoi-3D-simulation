@@ -1,9 +1,12 @@
 extends Node3D
 
 var step : int = 0
-
 var previous_step = []
 var next_step = []
+
+var is_anim_paused = true
+enum anim_state {STEPPING_FORWARD, IDLE, STEPPING_BACKWARD}
+var current_anim_state = anim_state.IDLE
 
 @export var disk_prefab : PackedScene
 @export var disk_mesh : CylinderMesh
@@ -16,10 +19,10 @@ var smallest_disk_radius : float = 1
 var biggest_disk_radius : float = 5
 var disk_radius_increment : float = 0.2
 var disk_height : float = 0.2
+var disks = []
 
 var rod_radius : float = 0.1
 var rod_height : float = 2
-
 var distance_between_rods : float = 1
 var rods_position = []
 
@@ -97,6 +100,7 @@ func draw_disks():
 		
 		spawn.position = rods_position[Hanoi.starting_rod] + Vector3(0, disk_height * i - rod_height/2 + disk_height/2, 0)
 		
+		disks.append(spawn)
 		$Rods.add_child(spawn)
 		
 		
@@ -107,4 +111,4 @@ func _ready() -> void:
 	calc_rods_position()
 	draw_rods()
 	draw_disks()
-	print(rods_position)
+	print(disks)
