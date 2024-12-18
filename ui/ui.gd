@@ -1,6 +1,6 @@
 extends Control
 
-@onready var number_of_disks_line_edit = $PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer/LineEdit
+@onready var number_of_disks_line_edit = $PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Disks/LineEdit
 
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
@@ -17,6 +17,8 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 		return
 		
 	Hanoi.number_of_disks =  new_text.to_int()
+	number_of_disks_line_edit.text = ""
+	number_of_disks_line_edit.placeholder_text = str(Hanoi.number_of_disks)
 
 
 func _on_button_pressed() -> void:

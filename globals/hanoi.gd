@@ -25,7 +25,7 @@ func set_up_hanoi():
 
 func move_it(from: int, to: int) -> void:
 	#print("Přesun ", from, " --> ", to)
-	hanoi_moves.append([from, to])
+	hanoi_moves.append(Vector2i(from, to))
 	
 	hanoi[to].push_back(hanoi[from].pop_back())
 	

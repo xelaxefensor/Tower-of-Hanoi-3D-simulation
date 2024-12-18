@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bsh0gxheestkb"]
+[gd_scene load_steps=13 format=3 uid="uid://bsh0gxheestkb"]
 
 [ext_resource type="PackedScene" uid="uid://cq4ry327mhjmy" path="res://disk/disk.tscn" id="1_751un"]
 [ext_resource type="Script" path="res://level/level.gd" id="1_h3ri2"]
@@ -6,9 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://ot3aeu13jkr5" path="res://rod/rod.tscn" id="3_j6351"]
 [ext_resource type="CylinderMesh" uid="uid://bfu81avcj6sb2" path="res://disk/disk_mesh.tres" id="3_y2qri"]
 [ext_resource type="CylinderMesh" uid="uid://d0bml6syr01lj" path="res://rod/rod_mesh.tres" id="4_0tdhj"]
-
-[sub_resource type="Environment" id="Environment_or0l8"]
-background_mode = 2
 
 [sub_resource type="Animation" id="Animation_8276q"]
 resource_name = "1"
@@ -23,6 +20,15 @@ _data = {
 "RESET": SubResource("Animation_8io5e")
 }
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hnwka"]
+
+[sub_resource type="Sky" id="Sky_28dr6"]
+sky_material = SubResource("ProceduralSkyMaterial_hnwka")
+
+[sub_resource type="Environment" id="Environment_h6d47"]
+background_mode = 2
+sky = SubResource("Sky_28dr6")
+
 [node name="Level" type="Node3D"]
 script = ExtResource("1_h3ri2")
 disk_prefab = ExtResource("1_751un")
@@ -31,11 +37,10 @@ rod_prefab = ExtResource("3_j6351")
 rod_mesh = ExtResource("4_0tdhj")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.105905, -0.391073, 0.914246, 0.0183235, 0.920028, 0.391424, -0.994207, -0.0247017, 0.104602, 0.96606, 2.09914, 0)
+transform = Transform3D(0.741035, -0.275315, 0.612427, 0.0183235, 0.920028, 0.391424, -0.671216, -0.278837, 0.686819, 0.96606, 2.09914, 0)
 
 [node name="Camera" parent="." instance=ExtResource("2_l1sfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0246684, 0, 1.9954)
-environment = SubResource("Environment_or0l8")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -45,3 +50,6 @@ libraries = {
 [node name="Rods" type="Node3D" parent="."]
 
 [node name="Disks" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_h6d47")
