@@ -40,7 +40,7 @@ rod_mesh = ExtResource("4_0tdhj")
 transform = Transform3D(0.741035, -0.275315, 0.612427, 0.0183235, 0.920028, 0.391424, -0.671216, -0.278837, 0.686819, 0.96606, 2.09914, 0)
 
 [node name="Camera" parent="." instance=ExtResource("2_l1sfo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0246684, 0, 1.9954)
+transform = Transform3D(1, 0, 0, 0, 0.969037, 0.246914, 0, -0.246914, 0.969037, 0, 2.19524, 4.5095)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

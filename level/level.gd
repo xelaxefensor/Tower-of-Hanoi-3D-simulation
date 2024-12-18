@@ -117,7 +117,7 @@ func draw_disks():
 		spawn.position = rods_position[Hanoi.starting_rod] + Vector3(0, disk_height * i - rod_height/2 + disk_height/2, 0)
 		
 		disks.append(spawn)
-		$Rods.add_child(spawn)
+		$Disks.add_child(spawn)
 		
 		
 func reset():
