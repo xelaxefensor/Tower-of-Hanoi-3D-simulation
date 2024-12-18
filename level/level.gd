@@ -188,3 +188,7 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 	speed_line_edit.text = ""
 	
 	$AnimationPlayer.speed_scale = anim_speed
+
+
+func _on_sub_viewport_container_mouse_clicked() -> void:
+	$Camera.is_focused = true

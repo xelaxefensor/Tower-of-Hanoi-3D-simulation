@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cj6a6rnrgng3q"]
+[gd_scene load_steps=6 format=3 uid="uid://cj6a6rnrgng3q"]
 
 [ext_resource type="Theme" uid="uid://pe8ifpbspa3e" path="res://ui/ui_theme.tres" id="1_rr4y4"]
 [ext_resource type="PackedScene" uid="uid://bsh0gxheestkb" path="res://level/level.tscn" id="1_vywhi"]
 [ext_resource type="Script" path="res://ui/ui.gd" id="2_0eogh"]
 [ext_resource type="Script" path="res://ui/sens_line_edit.gd" id="3_l7dr0"]
+[ext_resource type="Script" path="res://ui/sub_viewport_container.gd" id="4_hdvrg"]
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -103,6 +104,7 @@ script = ExtResource("3_l7dr0")
 layout_mode = 2
 size_flags_vertical = 3
 stretch = true
+script = ExtResource("4_hdvrg")
 
 [node name="SubViewport" type="SubViewport" parent="PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer"]
 handle_input_locally = false
@@ -120,3 +122,6 @@ speed_line_edit = NodePath("../../../VBoxContainer/HBoxContainer/Speed/LineEdit"
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Next" to="PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer/SubViewport/Level" method="_on_next_pressed"]
 [connection signal="text_submitted" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Speed/LineEdit" to="PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer/SubViewport/Level" method="_on_line_edit_text_submitted"]
 [connection signal="text_submitted" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Sensitivity/LineEdit" to="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Sensitivity/LineEdit" method="_on_text_submitted"]
+[connection signal="mouse_clicked" from="PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer" to="PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer/SubViewport/Level" method="_on_sub_viewport_container_mouse_clicked"]
+[connection signal="mouse_entered" from="PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer" to="PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer" to="PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer" method="_on_mouse_exited"]
