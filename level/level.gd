@@ -68,7 +68,7 @@ func calc_rods_position():
 	var y = rod_height / 2
 	var z = 0
 	
-	var x_lenght = distance_between_rods * Hanoi.number_of_rods - 1
+	var x_lenght = distance_between_rods * (Hanoi.number_of_rods - 1)
 	var x_first = 0 - x_lenght / 2
 	
 	for i in Hanoi.number_of_rods:
