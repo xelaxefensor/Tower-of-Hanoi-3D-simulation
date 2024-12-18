@@ -108,7 +108,7 @@ script = ExtResource("4_hdvrg")
 
 [node name="SubViewport" type="SubViewport" parent="PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer"]
 handle_input_locally = false
-size = Vector2i(2, 2)
+size = Vector2i(1132, 566)
 render_target_update_mode = 4
 
 [node name="Level" parent="PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer/SubViewport" node_paths=PackedStringArray("speed_line_edit") instance=ExtResource("1_vywhi")]
