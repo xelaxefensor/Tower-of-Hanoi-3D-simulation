@@ -4,11 +4,17 @@ var step : int = 0
 var previous_step
 var next_step
 
-@onready var anim_player = $AnimationPlayer
-var is_anim_paused = true
+@onready var anim_player : AnimationPlayer = $AnimationPlayer
+var is_anim_paused : bool = true:
+	set(val):
+		is_anim_paused = val
+		if val == true:
+			anim_player.pause()
+		else:
+			anim_player.play()
 enum anim_state {STEPPING_FORWARD, IDLE, STEPPING_BACKWARD}
 var current_anim_state = anim_state.IDLE
-var anim_speed : float = 1
+var anim_speed_scale : float = 1
 
 @export var speed_line_edit : LineEdit
 
@@ -38,7 +44,11 @@ var current_disks_position = []
 var next_disks_position = []
 var selected_disk
 var disk_keyframe_positions = []
-
+var distance_between_keyframes = []
+var overall_keyframe_distance : float = 0
+var def_animation_speed : float = 1
+var animation : Animation = Animation.new()
+var track_idx = animation.add_track(Animation.TYPE_POSITION_3D)
 
 
 func set_up_animation():
@@ -51,6 +61,9 @@ func set_up_animation():
 	current_disks_position = []
 	next_disks_position = []
 	disk_keyframe_positions = []
+	distance_between_keyframes = []
+	
+	animation.clear()
 	
 	for x in Hanoi.number_of_rods:
 		current_disks_position.append([])
@@ -60,6 +73,7 @@ func set_up_animation():
 	calc_next_disks_position(next_step.x, next_step.y)
 	calc_disk_to_anim(next_step.x)
 	calc_disk_keyframe_positions(next_step.x , next_step.y)
+	create_animation()
 	
 	
 func calc_disk_to_anim(from : int):
@@ -81,11 +95,43 @@ func calc_steps():
 func calc_disk_keyframe_positions(from : int, to : int):
 	disk_keyframe_positions = []
 	disk_keyframe_positions.append(selected_disk.position)
-	disk_keyframe_positions.append(Vector3(selected_disk.position.x, rod_height + disk_height, 0))
+	disk_keyframe_positions.append(Vector3(rods_position[from].x, rod_height + disk_height, 0))
 	disk_keyframe_positions.append(Vector3(rods_position[to].x, rod_height + disk_height, 0))
 	disk_keyframe_positions.append(Vector3(rods_position[to].x, disk_height/2 + current_disks_position[to].size() * disk_height, 0))
+	calc_distance_between_keyframes()
 	
 	
+func calc_distance_between_keyframes():
+	distance_between_keyframes = []
+	overall_keyframe_distance = 0
+	for i in disk_keyframe_positions.size()-1:
+		var x = disk_keyframe_positions[i].distance_to(disk_keyframe_positions[i+1])
+		distance_between_keyframes.append(x)
+		overall_keyframe_distance += x
+		
+		
+func create_animation():
+	animation.clear()
+	track_idx = animation.add_track(Animation.TYPE_POSITION_3D)
+	var node_path = "Disks/"+selected_disk.name
+	animation.track_set_path(track_idx, node_path)
+	
+	var distance = 0
+	for i in range(disk_keyframe_positions.size()):
+		if i == 0:
+			animation.track_insert_key(track_idx, 0, disk_keyframe_positions[i])
+		else:
+			animation.track_insert_key(track_idx, distance + distance_between_keyframes[i-1], disk_keyframe_positions[i])
+			distance += distance_between_keyframes[i-1]
+	
+	animation.length = overall_keyframe_distance
+	
+	var anim_library = anim_player.get_animation_library(anim_player.get_animation_library_list().front())
+	if anim_library.has_animation("Disk"):
+		anim_library.remove_animation("Disk")
+	anim_library.add_animation("Disk", animation)
+	
+		
 func calc_biggest_disk_radius():
 	biggest_disk_radius = smallest_disk_radius + (Hanoi.number_of_disks - 1) * disk_radius_increment
 	
@@ -176,16 +222,6 @@ func reset():
 	for i in $Disks.get_children():
 		i.queue_free()
 	
-	
-#func _on_button_pressed() -> void:
-#	reset()
-#	calc_biggest_disk_radius()
-#	calc_rod_height()
-#	calc_rods_position()
-#	draw_rods()
-#	draw_disks()
-#	set_up_animation()
-
 
 func _on_play_pause_pressed() -> void:
 	if not Hanoi.calculated:
@@ -210,19 +246,19 @@ func _on_next_pressed() -> void:
 func _on_line_edit_text_submitted(new_text: String) -> void:
 	if not new_text.is_valid_float():
 		speed_line_edit.text = ""
-		speed_line_edit.placeholder_text =  str(anim_speed)
+		speed_line_edit.placeholder_text =  str(anim_speed_scale)
 		return
 
 	if not new_text.to_float() > 0:
 		speed_line_edit.text = ""
-		speed_line_edit.placeholder_text =  str(anim_speed)
+		speed_line_edit.placeholder_text =  str(anim_speed_scale)
 		return
 
-	anim_speed = new_text.to_float()
+	anim_speed_scale = new_text.to_float()
 	speed_line_edit.placeholder_text = new_text
 	speed_line_edit.text = ""
 	
-	$AnimationPlayer.speed_scale = anim_speed
+	$AnimationPlayer.speed_scale = anim_speed_scale
 
 
 func _on_sub_viewport_container_mouse_clicked() -> void:
@@ -241,3 +277,15 @@ func on_hanoi_calculated():
 	draw_rods()
 	draw_disks()
 	set_up_animation()
+
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	change_current_step()
+		
+	
+func change_current_step():
+	current_disks_position = next_disks_position
+	
+	
+	if current_anim_state == anim_state.STEPPING_FORWARD:
+		pass

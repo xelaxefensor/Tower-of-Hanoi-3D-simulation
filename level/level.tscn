@@ -7,17 +7,16 @@
 [ext_resource type="CylinderMesh" uid="uid://bfu81avcj6sb2" path="res://disk/disk_mesh.tres" id="3_y2qri"]
 [ext_resource type="CylinderMesh" uid="uid://d0bml6syr01lj" path="res://rod/rod_mesh.tres" id="4_0tdhj"]
 
-[sub_resource type="Animation" id="Animation_8276q"]
-resource_name = "1"
-length = 3.0
-
 [sub_resource type="Animation" id="Animation_8io5e"]
 length = 0.001
 
+[sub_resource type="Animation" id="Animation_ghs4h"]
+resource_name = "test"
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2efbj"]
 _data = {
-"MOVE_DISK": SubResource("Animation_8276q"),
-"RESET": SubResource("Animation_8io5e")
+"RESET": SubResource("Animation_8io5e"),
+"test": SubResource("Animation_ghs4h")
 }
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hnwka"]
@@ -55,3 +54,5 @@ libraries = {
 environment = SubResource("Environment_h6d47")
 
 [node name="TimerBetweenSteps" type="Timer" parent="."]
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
