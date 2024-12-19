@@ -6,28 +6,30 @@ var min_number_of_disks : int = 4
 var starting_rod : int = 0
 var number_of_rods : int = 3
 
-var hanoi = []
+#var hanoi = []
 var hanoi_moves = []
 
 var calculated : bool = false
 
+signal hanoi_calculated
+
 
 func set_up_hanoi():
 	calculated = false
-	hanoi = []
+	#hanoi = []
 	hanoi_moves = []
-	for x in number_of_rods:
-		hanoi.append([])
+	#for x in number_of_rods:
+	#	hanoi.append([])
 
-	for x in number_of_disks:
-		hanoi[starting_rod].append(x)
+	#for x in number_of_disks:
+	#	hanoi[starting_rod].append(x)
 
 
 func move_it(from: int, to: int) -> void:
 	#print("Přesun ", from, " --> ", to)
 	hanoi_moves.append(Vector2i(from, to))
 	
-	hanoi[to].push_back(hanoi[from].pop_back())
+	#hanoi[to].push_back(hanoi[from].pop_back())
 	
 
 func do_hanoi(n: int, from: int, to: int, using: int) -> void:
@@ -47,3 +49,4 @@ func start_hanoi() -> void:
 	# Spuštění rekurzivního řešení
 	do_hanoi(number_of_disks, 0, 1, 2)
 	calculated = true
+	hanoi_calculated.emit()
