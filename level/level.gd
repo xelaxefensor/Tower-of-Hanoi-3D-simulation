@@ -1,5 +1,7 @@
 extends Node3D
 
+var is_set_upped : bool = false
+
 var step : int = 0
 var previous_step
 var next_step
@@ -11,7 +13,7 @@ var is_anim_paused : bool = true:
 		if val == true:
 			anim_player.pause()
 		else:
-			anim_player.play()
+			anim_player.play("Disk")
 enum anim_state {STEPPING_FORWARD, IDLE, STEPPING_BACKWARD}
 var current_anim_state = anim_state.IDLE
 var anim_speed_scale : float = 1
@@ -54,6 +56,13 @@ var track_idx = animation.add_track(Animation.TYPE_POSITION_3D)
 func set_up_animation():
 	if not Hanoi.calculated:
 		return
+		
+	reset()
+	calc_biggest_disk_radius()
+	calc_rod_height()
+	calc_rods_position()
+	draw_rods()
+	draw_disks()	
 	
 	step = 0
 	calc_steps()
@@ -74,6 +83,7 @@ func set_up_animation():
 	calc_disk_to_anim(next_step.x)
 	calc_disk_keyframe_positions(next_step.x , next_step.y)
 	create_animation()
+	is_set_upped = true
 	
 	
 func calc_disk_to_anim(from : int):
@@ -112,6 +122,7 @@ func calc_distance_between_keyframes():
 		
 func create_animation():
 	animation.clear()
+	anim_player.stop()
 	track_idx = animation.add_track(Animation.TYPE_POSITION_3D)
 	var node_path = "Disks/"+selected_disk.name
 	animation.track_set_path(track_idx, node_path)
@@ -227,6 +238,10 @@ func _on_play_pause_pressed() -> void:
 	if not Hanoi.calculated:
 		return
 		
+	if current_anim_state == anim_state.IDLE:
+		current_anim_state = anim_state.STEPPING_FORWARD
+		do_next_step()
+		
 	if is_anim_paused:
 		is_anim_paused = false
 	else:
@@ -270,22 +285,33 @@ func _ready() -> void:
 	
 	
 func on_hanoi_calculated():
-	reset()
-	calc_biggest_disk_radius()
-	calc_rod_height()
-	calc_rods_position()
-	draw_rods()
-	draw_disks()
 	set_up_animation()
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-	change_current_step()
-		
+	change_current_step()		
 	
 func change_current_step():
 	current_disks_position = next_disks_position
 	
-	
 	if current_anim_state == anim_state.STEPPING_FORWARD:
-		pass
+		step += 1
+	if current_anim_state == anim_state.STEPPING_BACKWARD:
+		step -= 1
+	
+	calc_steps()
+	calc_next_disks_position(next_step.x, next_step.y)
+	
+	do_next_step()
+	
+	
+func do_next_step():
+	calc_next_animation()
+	anim_player.play("Disk")
+
+
+func calc_next_animation():
+	calc_next_disks_position(next_step.x, next_step.y)
+	calc_disk_to_anim(next_step.x)
+	calc_disk_keyframe_positions(next_step.x , next_step.y)
+	create_animation()
