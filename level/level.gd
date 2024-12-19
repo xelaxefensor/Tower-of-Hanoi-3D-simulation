@@ -87,7 +87,8 @@ func set_up_animation():
 	
 	
 func calc_disk_to_anim(from : int):
-	selected_disk = disks[current_disks_position[from].back()]
+	if from != null and current_disks_position[from].size() != 0:
+		selected_disk = disks[current_disks_position[from].back()]
 		
 		
 func calc_next_disks_position(from : int, to : int):
@@ -96,6 +97,9 @@ func calc_next_disks_position(from : int, to : int):
 	
 	
 func calc_steps():
+	if not step <= Hanoi.hanoi_moves.size():
+		return
+	
 	if step > 0:
 		previous_step = Hanoi.hanoi_moves[step-1]
 	if Hanoi.hanoi_moves.size() > step:
@@ -214,6 +218,7 @@ func draw_disks():
 		
 		
 func reset():
+	is_anim_paused = true
 	step = 0
 	previous_step = null
 	next_step = null
@@ -238,6 +243,9 @@ func _on_play_pause_pressed() -> void:
 	if not Hanoi.calculated:
 		return
 		
+	if not is_set_upped:
+		return
+		
 	if current_anim_state == anim_state.IDLE:
 		current_anim_state = anim_state.STEPPING_FORWARD
 		do_next_step()
@@ -252,10 +260,26 @@ func _on_previous_pressed() -> void:
 	if not Hanoi.calculated:
 		return
 
+	if not is_set_upped:
+		return
+		
+		
+		
+		
+		
+			
 
 func _on_next_pressed() -> void:
 	if not Hanoi.calculated:
 		return
+		
+	if not is_set_upped:
+		return
+
+
+
+
+
 
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
@@ -291,6 +315,7 @@ func on_hanoi_calculated():
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	change_current_step()		
 	
+	
 func change_current_step():
 	current_disks_position = next_disks_position
 	
@@ -298,6 +323,8 @@ func change_current_step():
 		step += 1
 	if current_anim_state == anim_state.STEPPING_BACKWARD:
 		step -= 1
+		
+	current_anim_state = anim_state.IDLE
 	
 	calc_steps()
 	calc_next_disks_position(next_step.x, next_step.y)
@@ -306,6 +333,10 @@ func change_current_step():
 	
 	
 func do_next_step():
+	if not step < Hanoi.hanoi_moves.size():
+		return
+	
+	current_anim_state = anim_state.STEPPING_FORWARD
 	calc_next_animation()
 	anim_player.play("Disk")
 
