@@ -54,7 +54,6 @@ func set_up_animation():
 	
 	for x in Hanoi.number_of_rods:
 		current_disks_position.append([])
-
 	for x in Hanoi.number_of_disks:
 		current_disks_position[Hanoi.starting_rod].append(x)
 		
