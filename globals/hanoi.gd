@@ -6,7 +6,6 @@ var min_number_of_disks : int = 4
 var starting_rod : int = 0
 var number_of_rods : int = 3
 
-#var hanoi = []
 var hanoi_moves : PackedVector2Array = []
 
 var calculated : bool = false
@@ -16,20 +15,12 @@ signal hanoi_calculated
 
 func set_up_hanoi() -> void:
 	calculated = false
-	#hanoi = []
 	hanoi_moves = []
-	#for x in number_of_rods:
-	#	hanoi.append([])
-
-	#for x in number_of_disks:
-	#	hanoi[starting_rod].append(x)
 
 
 func move_it(from: int, to: int) -> void:
 	#print("Přesun ", from, " --> ", to)
 	hanoi_moves.append(Vector2i(from, to))
-	
-	#hanoi[to].push_back(hanoi[from].pop_back())
 	
 
 func do_hanoi(n: int, from: int, to: int, using: int) -> void:
