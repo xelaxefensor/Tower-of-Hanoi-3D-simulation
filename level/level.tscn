@@ -45,6 +45,7 @@ transform = Transform3D(1, 0, 0, 0, 0.969037, 0.246914, 0, -0.246914, 0.969037, 
 libraries = {
 "": SubResource("AnimationLibrary_2efbj")
 }
+speed_scale = 5.0
 
 [node name="Rods" type="Node3D" parent="."]
 

@@ -16,7 +16,7 @@ var is_anim_paused : bool = true:
 			anim_player.play("Disk")
 enum anim_state {STEPPING_FORWARD, IDLE, STEPPING_BACKWARD}
 var current_anim_state = anim_state.IDLE
-var anim_speed_scale : float = 1
+var anim_speed_scale : float = 5
 
 @export var speed_line_edit : LineEdit
 
