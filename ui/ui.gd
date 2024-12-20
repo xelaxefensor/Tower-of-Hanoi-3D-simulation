@@ -1,6 +1,6 @@
 extends Control
 
-@onready var number_of_disks_line_edit = $PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Disks/LineEdit
+@onready var number_of_disks_line_edit : LineEdit = $PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Disks/LineEdit
 
 
 func _on_line_edit_text_submitted(new_text: String) -> void:

@@ -7,14 +7,14 @@ var starting_rod : int = 0
 var number_of_rods : int = 3
 
 #var hanoi = []
-var hanoi_moves = []
+var hanoi_moves : PackedVector2Array = []
 
 var calculated : bool = false
 
 signal hanoi_calculated
 
 
-func set_up_hanoi():
+func set_up_hanoi() -> void:
 	calculated = false
 	#hanoi = []
 	hanoi_moves = []

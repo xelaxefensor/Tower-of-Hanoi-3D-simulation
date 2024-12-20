@@ -1,6 +1,6 @@
 extends SubViewportContainer
 
-var MouseOver = false
+var MouseOver : bool = false
 signal mouse_clicked
 
 func _on_mouse_entered() -> void:

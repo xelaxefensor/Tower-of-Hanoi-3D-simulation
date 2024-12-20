@@ -3,8 +3,8 @@ extends Node3D
 var is_set_upped : bool = false
 
 var step : int = 0
-var previous_step
-var next_step
+var previous_step : Vector2i
+var next_step : Vector2i
 
 @onready var anim_player : AnimationPlayer = $AnimationPlayer
 var is_anim_paused : bool = true:
@@ -20,7 +20,7 @@ var anim_speed_scale : float = 1
 
 @export var speed_line_edit : LineEdit
 
-@onready var wait_time_between_steps_timer = $TimerBetweenSteps
+@onready var wait_time_between_steps_timer : Timer = $TimerBetweenSteps
 var wait_time_between_steps : float = 0.5
 var disk_move_speed : float = 20
 
@@ -28,32 +28,32 @@ var disk_move_speed : float = 20
 @export var disk_mesh : CylinderMesh
 @export var rod_prefab : PackedScene
 @export var rod_mesh : CylinderMesh
-var disk_materials_var = "res://disk/materials/"
-var disk_materials = []
+var disk_materials_var : String = "res://disk/materials/"
+var disk_materials : Array = []
 
 var smallest_disk_radius : float = 1
 var biggest_disk_radius : float = 5
 var disk_radius_increment : float = 0.2
 var disk_height : float = 0.2
-var disks = []
+var disks : Array = []
 
 var rod_radius : float = 0.1
 var rod_height : float = 2
 var distance_between_rods : float = 1
-var rods_position = []
+var rods_position : Array = []
 
-var current_disks_position = []
-var next_disks_position = []
-var selected_disk
-var disk_keyframe_positions = []
-var distance_between_keyframes = []
+var current_disks_position : Array = []
+var next_disks_position : Array = []
+var selected_disk : Node3D
+var disk_keyframe_positions : Array = []
+var distance_between_keyframes : Array = []
 var overall_keyframe_distance : float = 0
 var def_animation_speed : float = 1
 var animation : Animation = Animation.new()
 var track_idx = animation.add_track(Animation.TYPE_POSITION_3D)
 
 
-func set_up_animation():
+func set_up_animation() -> void:
 	if not Hanoi.calculated:
 		return
 		
@@ -86,17 +86,17 @@ func set_up_animation():
 	is_set_upped = true
 	
 	
-func calc_disk_to_anim(from : int):
+func calc_disk_to_anim(from : int) -> void:
 	if from != null and current_disks_position[from].size() != 0:
 		selected_disk = disks[current_disks_position[from].back()]
 		
 		
-func calc_next_disks_position(from : int, to : int):
+func calc_next_disks_position(from : int, to : int) -> void:
 	next_disks_position = current_disks_position.duplicate(true)
 	next_disks_position[to].push_back(next_disks_position[from].pop_back())
 	
 	
-func calc_steps():
+func calc_steps() -> void:
 	if not step <= Hanoi.hanoi_moves.size():
 		return
 	
@@ -106,7 +106,7 @@ func calc_steps():
 		next_step = Hanoi.hanoi_moves[step]
 		
 		
-func calc_disk_keyframe_positions(from : int, to : int):
+func calc_disk_keyframe_positions(from : int, to : int) -> void:
 	disk_keyframe_positions = []
 	disk_keyframe_positions.append(selected_disk.position)
 	disk_keyframe_positions.append(Vector3(rods_position[from].x, rod_height + disk_height, 0))
@@ -115,7 +115,7 @@ func calc_disk_keyframe_positions(from : int, to : int):
 	calc_distance_between_keyframes()
 	
 	
-func calc_distance_between_keyframes():
+func calc_distance_between_keyframes() -> void:
 	distance_between_keyframes = []
 	overall_keyframe_distance = 0
 	for i in disk_keyframe_positions.size()-1:
@@ -124,7 +124,7 @@ func calc_distance_between_keyframes():
 		overall_keyframe_distance += x
 		
 		
-func create_animation():
+func create_animation() -> void:
 	animation.clear()
 	anim_player.stop()
 	track_idx = animation.add_track(Animation.TYPE_POSITION_3D)
@@ -147,19 +147,19 @@ func create_animation():
 	anim_library.add_animation("Disk", animation)
 	
 		
-func calc_biggest_disk_radius():
+func calc_biggest_disk_radius() -> void:
 	biggest_disk_radius = smallest_disk_radius + (Hanoi.number_of_disks - 1) * disk_radius_increment
 	
 	
-func calc_rod_height():
+func calc_rod_height() -> void:
 	rod_height = (Hanoi.number_of_disks+1) * disk_height
 
 
-func calc_distance_between_rods():
+func calc_distance_between_rods() -> void:
 	distance_between_rods = biggest_disk_radius*2
 	
 
-func calc_rods_position():
+func calc_rods_position() -> void:
 	calc_distance_between_rods()
 	
 	var y = rod_height / 2
@@ -173,7 +173,7 @@ func calc_rods_position():
 		rods_position.append(Vector3(x,y,z))
 		
 
-func draw_rods():
+func draw_rods() -> void:
 	var mesh : CylinderMesh = rod_mesh
 	mesh.bottom_radius = rod_radius
 	mesh.top_radius = rod_radius
@@ -190,14 +190,14 @@ func draw_rods():
 		$Rods.add_child(spawn)
 		
 		
-func set_up_disk_materials():
+func set_up_disk_materials() -> void:
 	var dir = DirAccess.open(disk_materials_var)
 	
 	for file in dir.get_files():
 		disk_materials.append(load(disk_materials_var+file))
 
 
-func draw_disks():
+func draw_disks() -> void:
 	set_up_disk_materials()
 	var num_of_colors = disk_materials.size()
 	
@@ -217,11 +217,11 @@ func draw_disks():
 		$Disks.add_child(spawn)
 		
 		
-func reset():
+func reset() -> void:
 	is_anim_paused = true
 	step = 0
-	previous_step = null
-	next_step = null
+	previous_step = Vector2i(0,0)
+	next_step = Vector2i(0,0)
 
 	is_anim_paused = true
 	current_anim_state = anim_state.IDLE
@@ -263,15 +263,14 @@ func _on_previous_pressed() -> void:
 	if not is_set_upped:
 		return
 		
-	if not step > 0:
-		return
-		
 	if current_anim_state == anim_state.STEPPING_FORWARD:
 		current_anim_state = anim_state.IDLE
 		is_anim_paused = true
 		selected_disk.position = disk_keyframe_positions[0]
 		change_current_step()
 	elif current_anim_state == anim_state.IDLE:
+		if not step > 0:
+			return
 		current_anim_state = anim_state.STEPPING_BACKWARD
 		is_anim_paused = true
 		calc_disk_to_anim(previous_step.y)
@@ -287,15 +286,14 @@ func _on_next_pressed() -> void:
 		
 	if not is_set_upped:
 		return
-		
-	if not step < Hanoi.hanoi_moves.size():
-		return	
 	
 	if current_anim_state == anim_state.STEPPING_FORWARD:
 		is_anim_paused = true
 		selected_disk.position = disk_keyframe_positions[3]
 		change_current_step()
 	elif current_anim_state == anim_state.IDLE:
+		if not step < Hanoi.hanoi_moves.size():
+			return	
 		current_anim_state = anim_state.STEPPING_FORWARD
 		is_anim_paused = true
 		calc_disk_to_anim(next_step.x)
@@ -330,7 +328,7 @@ func _ready() -> void:
 	Hanoi.hanoi_calculated.connect(on_hanoi_calculated)
 	
 	
-func on_hanoi_calculated():
+func on_hanoi_calculated() -> void:
 	set_up_animation()
 
 
@@ -338,7 +336,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	change_current_step()		
 	
 	
-func change_current_step():
+func change_current_step() -> void:
 	if current_anim_state == anim_state.IDLE:
 		return
 		
@@ -363,7 +361,7 @@ func change_current_step():
 		do_next_step()
 	
 	
-func do_next_step():
+func do_next_step() -> void:
 	if not step < Hanoi.hanoi_moves.size():
 		return
 	
@@ -372,7 +370,7 @@ func do_next_step():
 	anim_player.play("Disk")
 
 
-func calc_next_animation():
+func calc_next_animation() -> void:
 	calc_next_disks_position(next_step.x, next_step.y)
 	calc_disk_to_anim(next_step.x)
 	calc_disk_keyframe_positions(next_step.x , next_step.y)
