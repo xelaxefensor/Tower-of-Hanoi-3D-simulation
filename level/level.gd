@@ -263,11 +263,23 @@ func _on_previous_pressed() -> void:
 	if not is_set_upped:
 		return
 		
+	if not step > 0:
+		return
 		
+	if current_anim_state == anim_state.STEPPING_FORWARD:
+		current_anim_state = anim_state.IDLE
+		is_anim_paused = true
+		selected_disk.position = disk_keyframe_positions[0]
+		change_current_step()
+	elif current_anim_state == anim_state.IDLE:
+		current_anim_state = anim_state.STEPPING_BACKWARD
+		is_anim_paused = true
+		calc_disk_to_anim(previous_step.y)
+		calc_disk_keyframe_positions(previous_step.y , previous_step.x)
+		selected_disk.position = disk_keyframe_positions[3]
+		calc_next_disks_position(previous_step.y, previous_step.x)
+		change_current_step()
 		
-		
-		
-			
 
 func _on_next_pressed() -> void:
 	if not Hanoi.calculated:
@@ -275,12 +287,22 @@ func _on_next_pressed() -> void:
 		
 	if not is_set_upped:
 		return
-
-
-
-
-
-
+		
+	if not step < Hanoi.hanoi_moves.size():
+		return	
+	
+	if current_anim_state == anim_state.STEPPING_FORWARD:
+		is_anim_paused = true
+		selected_disk.position = disk_keyframe_positions[3]
+		change_current_step()
+	elif current_anim_state == anim_state.IDLE:
+		current_anim_state = anim_state.STEPPING_FORWARD
+		is_anim_paused = true
+		calc_disk_to_anim(next_step.x)
+		calc_disk_keyframe_positions(next_step.x , next_step.y)
+		selected_disk.position = disk_keyframe_positions[3]
+		change_current_step()
+	
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
 	if not new_text.is_valid_float():
@@ -317,6 +339,9 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	
 	
 func change_current_step():
+	if current_anim_state == anim_state.IDLE:
+		return
+		
 	current_disks_position = next_disks_position
 	
 	if current_anim_state == anim_state.STEPPING_FORWARD:
@@ -324,12 +349,18 @@ func change_current_step():
 	if current_anim_state == anim_state.STEPPING_BACKWARD:
 		step -= 1
 		
+	calc_steps()
+	#if current_anim_state == anim_state.STEPPING_FORWARD:
+	#	calc_next_disks_position(next_step.x, next_step.y)
+	#if current_anim_state == anim_state.STEPPING_BACKWARD:
+	#	calc_next_disks_position(previous_step.y, previous_step.x)
+		
+	calc_next_disks_position(next_step.x, next_step.y)
+		
 	current_anim_state = anim_state.IDLE
 	
-	calc_steps()
-	calc_next_disks_position(next_step.x, next_step.y)
-	
-	do_next_step()
+	if not is_anim_paused:
+		do_next_step()
 	
 	
 func do_next_step():
