@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bsh0gxheestkb"]
+[gd_scene load_steps=16 format=3 uid="uid://bsh0gxheestkb"]
 
 [ext_resource type="PackedScene" uid="uid://cq4ry327mhjmy" path="res://disk/disk.tscn" id="1_751un"]
 [ext_resource type="Script" path="res://level/level.gd" id="1_h3ri2"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://ot3aeu13jkr5" path="res://rod/rod.tscn" id="3_j6351"]
 [ext_resource type="CylinderMesh" uid="uid://bfu81avcj6sb2" path="res://disk/disk_mesh.tres" id="3_y2qri"]
 [ext_resource type="CylinderMesh" uid="uid://d0bml6syr01lj" path="res://rod/rod_mesh.tres" id="4_0tdhj"]
+[ext_resource type="Material" uid="uid://dapaxfca4vvos" path="res://disk/materials/disk_material_blue.tres" id="6_i5v82"]
+[ext_resource type="Material" uid="uid://bsu0rauf6sovn" path="res://disk/materials/disk_material_gree.tres" id="7_38u2c"]
+[ext_resource type="Material" uid="uid://drr5o7v8waki7" path="res://disk/materials/disk_material_red.tres" id="8_77tlp"]
 
 [sub_resource type="Animation" id="Animation_8io5e"]
 length = 0.001
@@ -34,6 +37,7 @@ disk_prefab = ExtResource("1_751un")
 disk_mesh = ExtResource("3_y2qri")
 rod_prefab = ExtResource("3_j6351")
 rod_mesh = ExtResource("4_0tdhj")
+disk_materials = [ExtResource("6_i5v82"), ExtResource("7_38u2c"), ExtResource("8_77tlp")]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.741035, -0.275315, 0.612427, 0.0183235, 0.920028, 0.391424, -0.671216, -0.278837, 0.686819, 0.96606, 2.09914, 0)

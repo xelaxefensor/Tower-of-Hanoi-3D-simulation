@@ -29,7 +29,7 @@ var disk_move_speed : float = 20
 @export var rod_prefab : PackedScene
 @export var rod_mesh : CylinderMesh
 var disk_materials_var : String = "res://disk/materials/"
-var disk_materials : Array = []
+@export var disk_materials : Array = []
 
 var smallest_disk_radius : float = 1
 var biggest_disk_radius : float = 5
@@ -188,17 +188,9 @@ func draw_rods() -> void:
 		spawn.position = rods_position[i-1]
 		
 		$Rods.add_child(spawn)
-		
-		
-func set_up_disk_materials() -> void:
-	var dir = DirAccess.open(disk_materials_var)
-	
-	for file in dir.get_files():
-		disk_materials.append(load(disk_materials_var+file))
 
 
 func draw_disks() -> void:
-	set_up_disk_materials()
 	var num_of_colors = disk_materials.size()
 	
 	for i in Hanoi.number_of_disks:
@@ -226,7 +218,6 @@ func reset() -> void:
 	is_anim_paused = true
 	current_anim_state = anim_state.IDLE
 
-	disk_materials = []
 	disks = []
 
 	distance_between_rods = 1
@@ -332,7 +323,7 @@ func on_hanoi_calculated() -> void:
 	set_up_animation()
 
 
-func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+func _on_animation_player_animation_finished(_anim_name: StringName) -> void:
 	change_current_step()		
 	
 	
